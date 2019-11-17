@@ -18,6 +18,8 @@ require('./config.php');
 // Logging
 $log_file = 'requests.log';
 
-file_put_contents($log_file, date("Y-m-d H:i:s") . file_get_contents('php://input') . "\n", FILE_APPEND);
+$post_data = file_get_contents('php://input');
 
-Router::route();
+file_put_contents($log_file, date("Y-m-d H:i:s") . $post_data . "\n", FILE_APPEND);
+
+Router::route($post_data);

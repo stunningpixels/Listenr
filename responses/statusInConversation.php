@@ -14,16 +14,17 @@ class StatusInConversation extends Status {
   }
 
   public static function recPostback($message) {
-    if(isset($message['postback']['payload'])) {
-      if($message['postback']['payload'] == 0) {
-        $partner_sender = Actions::getSession($message["sender"]["id"]);
-        Actions::sendMessage($partner_sender, "Your partner has ended the conversation");
-        Actions::sendMessage($message["sender"]["id"], "The conversation has ended");
-        Actions::reset($partner_sender);
-        Actions::reset($message["sender"]["id"]);
-      }else {
-        Actions::sendMessage($message["sender"]["id"], "Resuming chat");
-      }
+    if(!isset($message['postback']['payload'])) {
+      return;
+    }
+    if($message['postback']['payload'] == 0) {
+      $partner_sender = Actions::getSession($message["sender"]["id"]);
+      Actions::sendMessage($partner_sender, "Your partner has ended the conversation");
+      Actions::sendMessage($message["sender"]["id"], "The conversation has ended");
+      Actions::reset($partner_sender);
+      Actions::reset($message["sender"]["id"]);
+    }else {
+      Actions::sendMessage($message["sender"]["id"], "Resuming chat");
     }
   }
 

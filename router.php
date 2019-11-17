@@ -2,7 +2,7 @@
 
 class Router {
 
-  public static function route() {
+  public static function route($post_data) {
 
     // Facebook webhook verification
     if ($_GET['hub_verify_token']) {
@@ -10,7 +10,7 @@ class Router {
       exit;
     }
 
-    $input = json_decode(file_get_contents('php://input'), true);
+    $input = json_decode($post_data, true);
     $message = $input['entry'][0]['messaging'][0];
     $sender_id = $message['sender']['id'];
     switch(self::getSenderStatus($sender_id)) {

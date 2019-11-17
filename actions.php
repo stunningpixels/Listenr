@@ -70,9 +70,26 @@ class Actions {
     return DB::query("SELECT * FROM `queue` WHERE campaign_id=%i AND value_id=%i ORDER BY `timestamp`", $campaign, $value);
   }
 
-  public static function startConversation($sendera, $senderb) {
-    self::sendMessage($sendera, "You're now chatting, say hello :)\n\nRemember to be nice and type 'end' at any point to stop the conversation");
-    self::sendMessage($senderb, "You're now chatting, say hello :)\n\nRemember to be nice and type 'end' at any point to stop the conversation");
+  public static function addToQueue($sender_id, $selected_queue, $selected_value, $unselected_value) {
+    Actions::updateSenderStatus($sender_id, 'SENDER_IN_QUEUE');
+    DB::insert('queue', array(
+      'sender' => $sender_id,
+      'campaign_id' => $selected_value['campaign_id'],
+      'value_id' => $selected_value['id']
+    ));
+    Actions::sendShare($sender_id);
+    Actions::sendButtons($sender_id, "You're number " . (count($selected_queue) + 1) . " in the queue, as soon as someone {$unselected_value['text']} connects the conversation will begin", array("LEAVE" => "Leave queue"));
+  }
+
+  public static function startConversation($senderA, $senderB) {
+    DB::delete('queue', "sender=%i", $senderB);
+    self::updateSenderStatus($senderA, 'SENDER_IN_CONVERSATION');
+    self::updateSenderStatus($senderB, 'SENDER_IN_CONVERSATION');
+    self::setSession($senderA, $senderB);
+    self::setSession($senderB, $senderA);
+    $welcomeMessage = "You're now chatting, say hello :)\n\nRemember to be nice and type 'end' at any point to stop the conversation";
+    self::sendMessage($senderA, $welcomeMessage);
+    self::sendMessage($senderB, $welcomeMessage);
   }
 
   public static function sendMessage($sender, $message) {
@@ -80,7 +97,7 @@ class Actions {
       "recipient" => array("id" => $sender),
       "message" => array("text" => $message)
     );
-    return sendMessageToFB($data);
+    return self::sendMessageToFB($data);
   }
 
   public static function sendShare($sender) {
@@ -110,7 +127,7 @@ class Actions {
           )
         ))
     );
-    return sendMessageToFB($data);
+    return self::sendMessageToFB($data);
   }
 
   public static function sendButtons($sender, $message, $buttons) {
@@ -122,22 +139,11 @@ class Actions {
           "payload" => array(
             "template_type" => "button",
             "text" => $message,
-            "buttons" => buttonsArray($buttons)
+            "buttons" => self::buttonsArray($buttons)
           )
         ))
     );
-    return sendMessageToFB($data);
-  }
-
-  public static function sendQuickReply($sender, $message, $buttons) {
-    $data = array(
-      "recipient" => array("id" => $sender),
-      "message" => array(
-        "text" => $message,
-        "quick_replies" => buttonsArray($buttons)
-      )
-    );
-    return sendMessageToFB($data);
+    return self::sendMessageToFB($data);
   }
 
   private static function sendMessageToFB($data) {
