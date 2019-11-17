@@ -1,3 +1,4 @@
 config.php
 _notes
 component-tests
+logs/*.log

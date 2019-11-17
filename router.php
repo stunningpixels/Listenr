@@ -5,7 +5,7 @@ class Router {
   public static function route($post_data) {
 
     // Facebook webhook verification
-    if ($_GET['hub_verify_token']) {
+    if (isset($_GET['hub_verify_token']) && $_GET['hub_verify_token']) {
       echo $_GET['hub_challenge'];
       exit;
     }
