@@ -4,7 +4,8 @@
 
 class Actions {
 
-  public static $ACCESSTOKEN = '';
+  // set in config.php (fb url + access token)
+  public static $API_ENDPOINT = '';
 
   public static function updateSenderStatus($sender, $newStatus, $insert = false) {
     if($insert) {
@@ -75,53 +76,15 @@ class Actions {
   }
 
   public static function sendMessage($sender, $message) {
-    $url = 'https://graph.facebook.com/v2.6/me/messages?access_token='.self::$ACCESSTOKEN;
-    $ch = curl_init($url);
-
     $data = array(
       "recipient" => array("id" => $sender),
       "message" => array("text" => $message)
     );
-
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-    $result = curl_exec($ch);
+    return sendMessageToFB($data);
   }
 
   public static function sendShare($sender) {
-
-    $url = 'https://graph.facebook.com/v2.6/me/messages?access_token='.self::$ACCESSTOKEN;
-    $ch = curl_init($url);
-
-    // $data = array(
-    //   "recipient" => array("id" => $sender),
-    //   "message" => array(
-    //     "attachment" => array(
-    //       "type" => "template",
-    //       "payload" => array(
-    //         "template_type" => "generic",
-    //         "elements" => array(
-    //           array(
-    //             "title" => "Listenr, bursting the bubble",
-    //             "subtitle" => "Don't like queuing? Share Listenr with your friends to get more people in conversation",
-    //             "default_action" => array(
-    //               "type" => "web_url",
-    //               "url" => "https://m.me/listenrconnect"
-    //             ),
-    //             "buttons" => array(
-    //               array(
-    //                 "type" => "element_share"
-    //               )
-    //             )
-    //           )
-    //         )
-    //       )
-    //     ))
-    // );
-
     self::sendMessage($sender, "Don't like queuing? Share Listenr with your friends to get more people in conversation");
-
     $data = array(
       "recipient" => array("id" => $sender),
       "message" => array(
@@ -147,34 +110,10 @@ class Actions {
           )
         ))
     );
-
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-    $result = curl_exec($ch);
-
-    // $myfile = fopen("errorlog.txt", "w");
-    // fwrite($myfile, $result);
-    // fclose($myfile);
+    return sendMessageToFB($data);
   }
 
   public static function sendButtons($sender, $message, $buttons) {
-
-    $url = 'https://graph.facebook.com/v2.6/me/messages?access_token='.self::$ACCESSTOKEN;
-    $ch = curl_init($url);
-
-    $buttons_array = array();
-
-    foreach($buttons as $key => $button) {
-      array_push($buttons_array, array(
-        "type" => "postback",
-        "title" => $button,
-        "payload" => $key
-      ));
-    }
-
     $data = array(
       "recipient" => array("id" => $sender),
       "message" => array(
@@ -183,25 +122,34 @@ class Actions {
           "payload" => array(
             "template_type" => "button",
             "text" => $message,
-            "buttons" => $buttons_array
+            "buttons" => buttonsArray($buttons)
           )
         ))
     );
-
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-    $result = curl_exec($ch);
-
+    return sendMessageToFB($data);
   }
 
   public static function sendQuickReply($sender, $message, $buttons) {
+    $data = array(
+      "recipient" => array("id" => $sender),
+      "message" => array(
+        "text" => $message,
+        "quick_replies" => buttonsArray($buttons)
+      )
+    );
+    return sendMessageToFB($data);
+  }
 
-    $url = 'https://graph.facebook.com/v2.6/me/messages?access_token='.self::$ACCESSTOKEN;
-    $ch = curl_init($url);
+  private static function sendMessageToFB($data) {
+    $ch = curl_init(self::$API_ENDPOINT);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+    return curl_exec($ch);
+  }
 
+  private static function buttonsArray($buttons) {
     $buttons_array = array();
-
     foreach($buttons as $key => $button) {
       array_push($buttons_array, array(
         "content_type" => "text",
@@ -209,20 +157,7 @@ class Actions {
         "payload" => $key
       ));
     }
-
-    $data = array(
-      "recipient" => array("id" => $sender),
-      "message" => array(
-        "text" => $message,
-        "quick_replies" => $buttons_array
-      )
-    );
-
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-    $result = curl_exec($ch);
-
+    return $buttons_array;
   }
 
 }
