@@ -1,5 +1,4 @@
 config.php
-_notes
-component-tests
 logs/*.log
 !sql/model.sql
+!sql/dump/*

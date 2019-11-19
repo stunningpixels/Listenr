@@ -1,0 +1,21 @@
+{
+  "recipient": {
+    "id": null
+  },
+  "message": {
+    "attachment": {
+      "type": "template",
+      "payload": {
+        "template_type": "button",
+        "text": "You're number 2 in the queue, as soon as someone Remain connects the conversation will begin",
+        "buttons": [
+          {
+            "content_type": "text",
+            "title": "Leave queue",
+            "payload": "LEAVE"
+          }
+        ]
+      }
+    }
+  }
+}

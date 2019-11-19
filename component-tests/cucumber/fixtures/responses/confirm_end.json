@@ -1,0 +1,26 @@
+{
+  "recipient": {
+    "id": null
+  },
+  "message": {
+    "attachment": {
+      "type": "template",
+      "payload": {
+        "template_type": "button",
+        "text": "Please confirm...",
+        "buttons": [
+          {
+            "content_type": "text",
+            "title": "End the chat",
+            "payload": 0
+          },
+          {
+            "content_type": "text",
+            "title": "Keep chatting",
+            "payload": 1
+          }
+        ]
+      }
+    }
+  }
+}

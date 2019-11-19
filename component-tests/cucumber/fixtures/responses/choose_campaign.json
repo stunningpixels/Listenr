@@ -1,0 +1,21 @@
+{
+  "recipient": {
+    "id": null
+  },
+  "message": {
+    "attachment": {
+      "type": "template",
+      "payload": {
+        "template_type": "button",
+        "text": "To get started, please choose from one of the following topics:",
+        "buttons": [
+          {
+            "content_type": "text",
+            "title": "Brexit",
+            "payload": 1
+          }
+        ]
+      }
+    }
+  }
+}

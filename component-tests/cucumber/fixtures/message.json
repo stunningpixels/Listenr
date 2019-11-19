@@ -1,0 +1,20 @@
+{
+  "object": "page",
+  "entry": [
+    {
+      "id": "our_account_id",
+      "time": 1573313536300,
+      "messaging": [
+        {
+          "sender": {
+            "id": null
+          },
+          "recipient": {
+            "id": "our_account_id"
+          },
+          "timestamp": 1573313535944
+        }
+      ]
+    }
+  ]
+}
