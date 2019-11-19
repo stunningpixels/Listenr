@@ -26,6 +26,7 @@ class StatusChooseValue extends Status {
     $selected_value = DB::queryFirstRow("SELECT `values`.*, `campaigns`.title FROM `values` INNER JOIN campaigns ON values.campaign_id = campaigns.id WHERE `values`.id=%i", $message['postback']['payload']);
     $unselected_value = DB::queryFirstRow("SELECT `values`.*, `campaigns`.title, `campaigns`.title FROM `values` INNER JOIN campaigns ON values.campaign_id = campaigns.id WHERE `campaigns`.id=%i AND `values`.id !=%i", $selected_value['campaign_id'], $selected_value['id']);
     Actions::sendMessage($message['sender']['id'], "Matching you with a person who's {$unselected_value['text']}...");
+
     $selected_queue = Actions::getQueue($selected_value['campaign_id'], $selected_value['id']);
     $unselected_queue = Actions::getQueue($unselected_value['campaign_id'], $unselected_value['id']);
 

@@ -77,7 +77,7 @@ class Actions {
       'campaign_id' => $selected_value['campaign_id'],
       'value_id' => $selected_value['id']
     ));
-    Actions::sendShare($sender_id);
+    // Actions::sendShare($sender_id); TODO dosen't seem to work in the live version
     Actions::sendButtons($sender_id, "You're number " . (count($selected_queue) + 1) . " in the queue, as soon as someone {$unselected_value['text']} connects the conversation will begin", array("LEAVE" => "Leave queue"));
   }
 
