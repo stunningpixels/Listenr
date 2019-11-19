@@ -4,6 +4,7 @@
 export SERVER_ENVIRONMENT='TEST_ENVIRONMENT'
 export LISTENR_URL='localhost:8000'
 export MOCK_PORT='7899'
+# export DB_PASSWORD="your password"
 
 # reset database each time (remember to set DB_PASSWORD in env)
 mysql --user="root" --password=$DB_PASSWORD < sql/model.sql

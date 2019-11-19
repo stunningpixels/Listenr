@@ -1,6 +1,7 @@
 <?php
 
 if (getenv('SERVER_ENVIRONMENT') == 'TEST_ENVIRONMENT') {
+  // Development / test environment
 
   echo "Using TEST_SERVER\n";
 
@@ -15,6 +16,7 @@ if (getenv('SERVER_ENVIRONMENT') == 'TEST_ENVIRONMENT') {
   DB::$encoding = 'utf8';
 
 } else {
+  // Production
 
   // // Live app:
   $ACCESS_TOKEN = '';
