@@ -1,4 +1,4 @@
 config.php
-logs/*
+logs/*.log
 !sql/model.sql
 !sql/dump/*
