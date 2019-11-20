@@ -1,5 +1,7 @@
 # Listenr
 
+A chatbot that connects people with opposing views, in the hope that we can start to understand each other a little better. Think omeagle meets politics
+
 ## Running Local Tests
 
 ### Test requirements and setup
