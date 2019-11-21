@@ -27,7 +27,7 @@ When("we recieve a {string} from the sender id {string}") do |message_type, send
   message = load_json_fixture('message')
   message['entry'][0]['messaging'][0][message_type] = table.hashes.first
   message['entry'][0]['messaging'][0]['sender']['id'] = sender_id
-  STDOUT.puts message if DEBUG
+  STDOUT.puts message if DEBUG_MODE
   RestClient.post(LISTENR_URL, message.to_json, {content_type: :json, accept: :json})
 end
 
@@ -42,7 +42,7 @@ Then("the following messages are sent in response") do |table|
   @FB_DOUBLE.requests.each do |res|
     expected = load_response_fixture(table.hashes.shift)
     actual = JSON.parse(res.body)
-    STDOUT.puts JSON.pretty_generate(actual) if DEBUG
+    STDOUT.puts JSON.pretty_generate(actual) if DEBUG_MODE
     expect(actual).to eq(expected)
   end
 end

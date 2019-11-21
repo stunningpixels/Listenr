@@ -5,23 +5,26 @@ require 'mysql2'
 
 AfterConfiguration do
 
-  LISTENR_URL = ENV['LISTENR_URL']
-  MOCK_PORT = ENV['MOCK_PORT']
+  LISTENR_PORT = ENV['LISTENR_PORT']
+  FB_MOCK_PORT = ENV['FB_MOCK_PORT']
+  DB_PASSWORD  = ENV['DB_PASSWORD']
+  DEBUG_MODE   = ENV.fetch('DEBUG_MODE', false)
 
   DB_CONFIG = {
     :user => 'root',
     :host => 'localhost',
     :database => 'listenr_test',
-    :password => ENV['DB_PASSWORD'],
+    :password => DB_PASSWORD,
   }
 
-  DEBUG = ENV['DEBUG_MODE']
+  LISTENR_URL = "localhost:#{LISTENR_PORT}"
 
+  STDOUT.puts "DEBUG_MODE: #{DEBUG_MODE}"
   STDOUT.puts "LISTENR_URL: #{LISTENR_URL}"
-  STDOUT.puts "MOCK_PORT: #{MOCK_PORT}"
+  STDOUT.puts "FB_MOCK_URL: localhost:#{FB_MOCK_PORT}"
 
   # we set $API_ENDPOINT
-  RestAssured::Server.start(database: ':memory:', port: ENV['MOCK_PORT'])
+  RestAssured::Server.start(database: ':memory:', port: FB_MOCK_PORT)
 
   # setup db options
   DB.query('INSERT INTO `campaigns` (`id`, `title`) VALUES (?, ?)', 1, 'Brexit')
