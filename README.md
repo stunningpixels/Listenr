@@ -11,7 +11,7 @@ $ bundle install
 ```
 You need a MySQL instance running installed and running locally—could probably change the config to point to a remote instance.
 
-The `mysql2` ruby gem seems to be a little awkward so may have to install individually with reference to your mysql-config file.
+The `mysql2` ruby gem seems to be a little awkward. You may have to install it individually with reference to your mysql-config file.
 ```
 $ gem install mysql2 -- --with-mysql-config=/usr/local/mysql/bin/mysql_config
 ```
