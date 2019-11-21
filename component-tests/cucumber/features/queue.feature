@@ -28,9 +28,10 @@ Feature: choose values and queue
       | title | payload |
       | Leave | 1       |
     Then the following messages are sent in response
-      | recipient_id | message        | text                                       |
-      | 666999       | text_message   | Matching you with a person who's Remain... |
-      | 666999       | added_to_queue |                                            |
+      | recipient_id | message        | text                                                                                                           |
+      | 666999       | text_message   | Matching you with a person who's Remain...                                                                     |
+      | 666999       | text_message   | Don't like queuing? Share Listenr with your friends to get more people in conversation me. m.me/listenrconnect |
+      | 666999       | added_to_queue |                                                                                                                |
     And the sender id "666999" now has the status "SENDER_IN_QUEUE"
 
   Scenario: choose value, non matching senders in queue
@@ -45,7 +46,8 @@ Feature: choose values and queue
       | title | payload |
       | Leave | 1       |
     Then the following messages are sent in response
-      | recipient_id | message         | text                                       |
-      | 666999       | text_message    | Matching you with a person who's Remain... |
-      | 666999       | added_to_queue2 |                                            |
+      | recipient_id | message         | text                                                                                                           |
+      | 666999       | text_message    | Matching you with a person who's Remain...                                                                     |
+      | 666999       | text_message    | Don't like queuing? Share Listenr with your friends to get more people in conversation me. m.me/listenrconnect |
+      | 666999       | added_to_queue2 |                                                                                                                |
     And the sender id "666999" now has the status "SENDER_IN_QUEUE"

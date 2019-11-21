@@ -77,7 +77,7 @@ class Actions {
       'campaign_id' => $selected_value['campaign_id'],
       'value_id' => $selected_value['id']
     ));
-    // Actions::sendShare($sender_id); TODO dosen't seem to work in the live version
+    self::sendMessage($sender_id, "Don't like queuing? Share Listenr with your friends to get more people in conversation me. m.me/listenrconnect");
     Actions::sendButtons($sender_id, "You're number " . (count($selected_queue) + 1) . " in the queue, as soon as someone {$unselected_value['text']} connects the conversation will begin", array("LEAVE" => "Leave queue"));
   }
 
@@ -96,36 +96,6 @@ class Actions {
     $data = array(
       "recipient" => array("id" => $sender),
       "message" => array("text" => $message)
-    );
-    return self::sendMessageToFB($data);
-  }
-
-  public static function sendShare($sender) {
-    self::sendMessage($sender, "Don't like queuing? Share Listenr with your friends to get more people in conversation");
-    $data = array(
-      "recipient" => array("id" => $sender),
-      "message" => array(
-        "attachment" => array(
-          "type" => "template",
-          "payload" => array(
-            "template_type" => "generic",
-            "elements" => array(
-              array(
-                "title" => "Listenr, bursting the bubble",
-                "subtitle" => "Don't like queuing? Share Listenr with your friends to get more people in conversation",
-                "default_action" => array(
-                  "type" => "web_url",
-                  "url" => "https://m.me/listenrconnect"
-                ),
-                "buttons" => array(
-                  array(
-                    "type" => "element_share"
-                  )
-                )
-              )
-            )
-          )
-        ))
     );
     return self::sendMessageToFB($data);
   }
