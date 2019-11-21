@@ -19,24 +19,12 @@ The `mysql2` gem seems to be a little awkward so may have to install individuall
 $ gem install mysql2 -- --with-mysql-config=/usr/local/mysql/bin/mysql_config
 ```
 
-your local mysql instance password is needed as an environment variable e.g. set this in your shell session or add to `test` script.
+### Running
+Your local mysql instance password is needed as an environment variable e.g. set this in your shell session or add to `test` script.
 ```
 export DB_PASSWORD="your password"
 ```
-
-### Running
-
+Set up the mock environment and the listenr php application locally and then run the all test scenarios. For more detailed logging, set `DEBUG_MODE=true`.
 ```
 $ ./test
-```
-This will set up the mock environment and the listenr php application locally and then run the all test scenarios.
-
-Individual features can be run with their path. e.g.
-```
-$ ./test features/initial.feature
-```
-
-for more detailed test logging (prints messages) run with...
-```
-$  ./test DEBUG_MODE=true
 ```
